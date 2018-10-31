@@ -74,13 +74,13 @@ def PublishJammedSignal(state):
         message = "OFF"
     client.publish("chickenPi/door/Jammed", message, 0, True)
 
-def PublishFailedSensorSignal(state):
-    message = ""
-    if(state == True):
-        message = "ON"
-    else:
-        message = "OFF"
-    client.publish("chickenPi/door/FailedSensor", message, 0, True)
+#~ def PublishFailedSensorSignal(state):
+    #~ message = ""
+    #~ if(state == True):
+        #~ message = "ON"
+    #~ else:
+        #~ message = "OFF"
+    #~ client.publish("chickenPi/door/FailedSensor", message, 0, True)
 
 def InitializePins():
     gpio.setmode(gpio.BCM)
@@ -127,12 +127,13 @@ def CloseGate():
         PublishJammedSignal(True)
         StopGate("Jammed")
 
-    time.sleep(20)
-    if(GetReed(BottomReed) == 0):
-        PublishFailedSensorSignal(True)
-        StopGate("Sensor Failure")
-    else:
-        PublishFailedSensorSignal(False)
+    #~ time.sleep(20)
+    #~ if(GetReed(BottomReed) == 0):
+        #~ PublishFailedSensorSignal(True)
+        #~ StopGate("Sensor Failure")
+    #~ else:
+        #~ PublishFailedSensorSignal(False)
+        #~ UpdateHADetailedState("Closed")
 
 def OpenGate():
     if(GetReed(TopReed) == 1):
@@ -155,12 +156,13 @@ def OpenGate():
         PublishJammedSignal(True)
         StopGate("Jammed")
 
-    time.sleep(12)
-    if(GetReed(TopReed) == 0):
-        PublishFailedSensorSignal(True)
-        StopGate("Sensor Failure")
-    else:
-        PublishFailedSensorSignal(False)
+    #~ time.sleep(20)
+    #~ if(GetReed(TopReed) == 0):
+        #~ PublishFailedSensorSignal(True)
+        #~ StopGate("Sensor Failure")
+    #~ else:
+        #~ PublishFailedSensorSignal(False)
+        #~ UpdateHADetailedState("Open")
 
 def StopGate(doorState):
     gpio.output(HBridgeOutA, False)
