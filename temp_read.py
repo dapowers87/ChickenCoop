@@ -51,7 +51,7 @@ def outputTempHum():
 
 GPIO.setwarnings(False)
 
-dht_pin = 23
+dht_pin = 24
 dht_chip_type = 11
 
 last_temp = -1
