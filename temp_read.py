@@ -37,7 +37,7 @@ def outputTempHum():
         if(math.fabs(last_temp - temperature) > 20
            or humidity > 100
            or humidity < 0
-           or math.fabs(last_humidity - humidity) > 20):
+           or math.fabs(last_humidity - humidity) > 30):
             print("Bad read... %s" % message)
         else:
             client.publish("ChickenPi/sensors/NestDHT11", message)
