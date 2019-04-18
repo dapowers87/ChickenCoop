@@ -245,17 +245,25 @@ SendInitialStatus()
 #threading.Thread(target=automateSunriseSunsetDoor).start()
 
 def ScanForReedSensorFailure():
+    failureObserved = False
     while (True):
         topReedRead = GetReed(TopReed)
         bottomReedRead = GetReed(BottomReed)
         
-        if topReedRead == 1 and bottomReedRead == 1
+        if topReedRead == 1 and bottomReedRead == 1:
             PublishFailedSensorSignal(True)
-            StopGate("Sensor Failure")
+            if not failureObserved:
+                print("Sensor failure detected")
+                failureObserved = True
+        elif failureObserved:
+            PublishFailedSensorSignal(False)
+            print("Sensor failure cleared")
         
-        time.sleep(1)
+        time.sleep(60)
 
-threading.Thread(target=ScanForReedSensorFailure).start()
+scanThread = threading.Thread(target=ScanForReedSensorFailure)
+scanThread.daemon = True
+scanThread.start()
 
 try:
 
