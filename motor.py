@@ -255,9 +255,10 @@ def ScanForReedSensorFailure():
             if not failureObserved:
                 print("Sensor failure detected")
                 failureObserved = True
-        elif failureObserved:
+        else:
             PublishFailedSensorSignal(False)
-            print("Sensor failure cleared")
+            if failureObserved:
+                print("Sensor failure cleared")
         
         time.sleep(60)
 
