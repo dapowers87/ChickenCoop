@@ -46,6 +46,7 @@ def on_message(client, userdata, message):
         StopGate("Remotely Stopped")
 
 Connected = False
+print("Beginning MQTT Connection")
 client = mqtt.Client()
 client.username_pw_set("chickenPi", "pi")
 client.on_message = on_message
@@ -59,6 +60,8 @@ while Connected != True:    #Wait for connection
     time.sleep(0.1)
 
 client.subscribe("chickenPi/door/set")
+
+print("Completed  MQTT Connection")
 
 def UpdateHADetailedState(message, topic="chickenPi/door/DetailedState"):
     client.publish(topic, message, 0, True)
@@ -74,13 +77,13 @@ def PublishJammedSignal(state):
         message = "OFF"
     client.publish("chickenPi/door/Jammed", message, 0, True)
 
-#~ def PublishFailedSensorSignal(state):
-    #~ message = ""
-    #~ if(state == True):
-        #~ message = "ON"
-    #~ else:
-        #~ message = "OFF"
-    #~ client.publish("chickenPi/door/FailedSensor", message, 0, True)
+def PublishFailedSensorSignal(state):
+    message = ""
+    if(state == True):
+        message = "ON"
+    else:
+        message = "OFF"
+    client.publish("chickenPi/door/FailedSensor", message, 0, True)
 
 def InitializePins():
     gpio.setmode(gpio.BCM)
@@ -108,6 +111,8 @@ def GetReed(reed):
 
 def CloseGate():
     if(GetReed(BottomReed) == 1):
+        print("Gate already closed")
+        PrintReed()
         UpdateHACoverState("Closed")
         UpdateHADetailedState("Closed")
         PublishJammedSignal(False)
@@ -135,8 +140,16 @@ def CloseGate():
         #~ PublishFailedSensorSignal(False)
         #~ UpdateHADetailedState("Closed")
 
+def PrintReed():
+    top = GetReed(TopReed)
+    bottom = GetReed(BottomReed)
+    
+    print("Top: %s\tBottom: %s" % (top, bottom))
+
 def OpenGate():
     if(GetReed(TopReed) == 1):
+        print("Gate already open")
+        PrintReed()
         UpdateHACoverState("Open")
         UpdateHADetailedState("Open")
         PublishJammedSignal(False)
@@ -231,6 +244,19 @@ SendInitialStatus()
 
 #threading.Thread(target=automateSunriseSunsetDoor).start()
 
+def ScanForReedSensorFailure():
+    while (True):
+        topReedRead = GetReed(TopReed)
+        bottomReedRead = GetReed(BottomReed)
+        
+        if topReedRead == 1 and bottomReedRead == 1
+            PublishFailedSensorSignal(True)
+            StopGate("Sensor Failure")
+        
+        time.sleep(1)
+
+threading.Thread(target=ScanForReedSensorFailure).start()
+
 try:
 
     #CloseGate()
@@ -260,7 +286,7 @@ try:
 
         topReedRead = GetReed(TopReed)
         bottomReedRead = GetReed(BottomReed)
-
+        
         #print (topReedRead)
         #~ if(topReedRead == 1):
             #~ print("T")

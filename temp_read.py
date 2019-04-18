@@ -58,6 +58,7 @@ last_temp = -1
 last_humidity = -1
 
 Connected = False
+print("Beginning MQTT Connection")
 client = mqtt.Client()
 client.username_pw_set("chickenPi", "pi")
 client.on_connect = on_connect
@@ -68,6 +69,8 @@ client.loop_start()
 
 while Connected != True:    #Wait for connection
     time.sleep(1)
+
+print("Completed  MQTT Connection")
 
 try:
     while True:
