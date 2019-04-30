@@ -44,6 +44,9 @@ def on_message(client, userdata, message):
     elif (message.payload == "STOP"):
         print("**STOP Received")
         StopGate("Remotely Stopped")
+    elif (message.payload == "FIX_CLOSE_OVERSHOOT"):
+        print("**FIX_CLOSE_OVERSHOOT Received")
+        FixCloseOvershoot()
 
 Connected = False
 print("Beginning MQTT Connection")
@@ -127,18 +130,14 @@ def CloseGate():
 
     UpdateHADetailedState("Closing")
 
-    time.sleep(3)
-    if(GetReed(TopReed) == 1):
-        PublishJammedSignal(True)
-        StopGate("Jammed")
+def FixCloseOvershoot():
+    UpMotion()
+    time.sleep(10)
+    OpenGate()
 
-    #~ time.sleep(20)
-    #~ if(GetReed(BottomReed) == 0):
-        #~ PublishFailedSensorSignal(True)
-        #~ StopGate("Sensor Failure")
-    #~ else:
-        #~ PublishFailedSensorSignal(False)
-        #~ UpdateHADetailedState("Closed")
+def UpMotion():
+    gpio.output(HBridgeOutA, True)
+    gpio.output(HBridgeOutB, False)
 
 def PrintReed():
     top = GetReed(TopReed)
@@ -156,8 +155,7 @@ def OpenGate():
         return
 
     print("Opening Gate")
-    gpio.output(HBridgeOutA, True)
-    gpio.output(HBridgeOutB, False)
+    UpMotion()
 
     global MovementState
     MovementState = 1
@@ -168,14 +166,6 @@ def OpenGate():
     if(GetReed(BottomReed) == 1):
         PublishJammedSignal(True)
         StopGate("Jammed")
-
-    #~ time.sleep(20)
-    #~ if(GetReed(TopReed) == 0):
-        #~ PublishFailedSensorSignal(True)
-        #~ StopGate("Sensor Failure")
-    #~ else:
-        #~ PublishFailedSensorSignal(False)
-        #~ UpdateHADetailedState("Open")
 
 def StopGate(doorState):
     gpio.output(HBridgeOutA, False)
@@ -259,6 +249,7 @@ def ScanForReedSensorFailure():
             PublishFailedSensorSignal(False)
             if failureObserved:
                 print("Sensor failure cleared")
+                failureObserved = False
         
         time.sleep(60)
 
@@ -295,31 +286,6 @@ try:
 
         topReedRead = GetReed(TopReed)
         bottomReedRead = GetReed(BottomReed)
-        
-        #print (topReedRead)
-        #~ if(topReedRead == 1):
-            #~ print("T")
-        #~ if(bottomReedRead == 1):
-            #~ print("     B")
-
-        #~ if (openButtonRead == 1):
-            #~ if(MovementState == 0):
-                #~ OpenGate()
-            #~ elif(MovementState == -1):
-                #~ print("Stopping Gate...")
-                #~ StopGate("Manually Stopped")
-            #~ while (gpio.input(OpenButton) == 1):
-                #~ pass
-            #~ time.sleep(0.25)
-        #~ elif (closeButtonRead == 1):
-            #~ if(MovementState == 0):
-                #~ CloseGate()
-            #~ elif(MovementState == 1):
-                #~ print("Stopping Gate...")
-                #~ StopGate("Manually Stopped")
-            #~ while (gpio.input(CloseButton) == 1):
-                #~ pass
-            #~ time.sleep(0.25)
 
         if( MovementState <> 0 ):
             if(MovementState == -1 and bottomReedRead == 1
