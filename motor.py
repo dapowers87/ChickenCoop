@@ -47,6 +47,8 @@ def on_message(client, userdata, message):
     elif (message.payload == "FIX_CLOSE_OVERSHOOT"):
         print("**FIX_CLOSE_OVERSHOOT Received")
         FixCloseOvershoot()
+    else:
+        print(message.payload)
 
 Connected = False
 print("Beginning MQTT Connection")
@@ -132,7 +134,7 @@ def CloseGate():
 
 def FixCloseOvershoot():
     UpMotion()
-    time.sleep(10)
+    time.sleep(3)
     OpenGate()
 
 def UpMotion():
