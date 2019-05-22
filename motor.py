@@ -48,7 +48,7 @@ def on_message(client, userdata, message):
         print("**FIX_CLOSE_OVERSHOOT Received")
         FixCloseOvershoot()
     elif (message.payload == "OPEN_MANUALLY"):
-        print("**Open Gate Manually Received")
+        print("**OPEN_MANUALLY Received")
         OpenGateManually()
     else:
         print(message.payload)
