@@ -47,6 +47,9 @@ def on_message(client, userdata, message):
     elif (message.payload == "FIX_CLOSE_OVERSHOOT"):
         print("**FIX_CLOSE_OVERSHOOT Received")
         FixCloseOvershoot()
+    elif (message.payload == "OPEN_MANUALLY"):
+        print("**Open Gate Manually Received")
+        OpenGateManually()
     else:
         print(message.payload)
 
@@ -146,6 +149,12 @@ def PrintReed():
     bottom = GetReed(BottomReed)
     
     print("Top: %s\tBottom: %s" % (top, bottom))
+
+def OpenGateManually():
+    print("Opening gate manually")
+    UpMotion()
+    time.sleep(12)
+    StopGate("Manually Open")
 
 def OpenGate():
     if(GetReed(TopReed) == 1):
