@@ -9,6 +9,8 @@ import paho.mqtt.client as mqtt
 
 print "motor.py"
 
+time.sleep(10)
+
 #PINS################
 HBridgeOutA = 26
 HBridgeOutB = 13
@@ -247,22 +249,26 @@ SendInitialStatus()
 
 def ScanForReedSensorFailure():
     failureObserved = False
+    failCount = 0
     while (True):
         topReedRead = GetReed(TopReed)
         bottomReedRead = GetReed(BottomReed)
         
         if topReedRead == 1 and bottomReedRead == 1:
-            PublishFailedSensorSignal(True)
-            if not failureObserved:
-                print("Sensor failure detected")
-                failureObserved = True
+            failCount++
+            if failCount > 5:
+                PublishFailedSensorSignal(True)
+                if not failureObserved:
+                    print("Sensor failure detected")
+                    failureObserved = True
         else:
+            failCount = 0
             PublishFailedSensorSignal(False)
             if failureObserved:
                 print("Sensor failure cleared")
                 failureObserved = False
         
-        time.sleep(60)
+        time.sleep(1)
 
 scanThread = threading.Thread(target=ScanForReedSensorFailure)
 scanThread.daemon = True

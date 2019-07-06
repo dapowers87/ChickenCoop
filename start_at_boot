@@ -1,0 +1,7 @@
+sudo vi /etc/xdg/lxsession/LXDE-pi/autostart
+or it gets trumped by 
+sudo vi ~/.config/lxsession/LXDE-pi/autostart
+
+
+@lxterminal -e sudo python /home/pi/startup_scripts/motor.py
+@lxterminal -e sudo python /home/pi/startup_scripts/temp_read.py

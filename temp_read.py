@@ -10,6 +10,8 @@ import time
 
 print "temp_read.py"
 
+time.sleep(10)
+
 def on_connect(client, userdata, flags, rc):
     global Connected                #Use global variable
     Connected = True                #Signal connection
