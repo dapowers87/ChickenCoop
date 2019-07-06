@@ -255,7 +255,7 @@ def ScanForReedSensorFailure():
         bottomReedRead = GetReed(BottomReed)
         
         if topReedRead == 1 and bottomReedRead == 1:
-            failCount++
+            failCount += 1
             if failCount > 5:
                 PublishFailedSensorSignal(True)
                 if not failureObserved:
