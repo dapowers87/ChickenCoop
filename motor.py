@@ -9,7 +9,7 @@ import paho.mqtt.client as mqtt
 
 print "motor.py"
 
-time.sleep(10)
+#time.sleep(10)
 
 #PINS################
 HBridgeOutA = 26
@@ -268,7 +268,7 @@ def ScanForReedSensorFailure():
                 print("Sensor failure cleared")
                 failureObserved = False
         
-        time.sleep(1)
+        time.sleep(10)
 
 scanThread = threading.Thread(target=ScanForReedSensorFailure)
 scanThread.daemon = True
