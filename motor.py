@@ -123,8 +123,10 @@ def CloseGate():
     if(GetReed(BottomReed) == 1):
         print("Gate already closed")
         PrintReed()
+                    
         UpdateHACoverState("Closed")
-        UpdateHADetailedState("Closed")
+        UpdateHADetailedState("Closed")            
+            
         PublishJammedSignal(False)
         return
 
@@ -227,23 +229,22 @@ def automateSunriseSunsetDoor():
             CloseGate()
             time.sleep(60)
 
-def SendInitialStatus():
+def PublishInitialStatus():
     top = GetReed(TopReed)
     bottom = GetReed(BottomReed)
 
-    if(top == 1 and bottom == 1):
-        UpdateHACoverState("Error. Both Sensors True")
+    if(bottom == 1):
+        UpdateHACoverState("Closed")
+        UpdateHADetailedState("Closed")
     elif(top == 1):
         UpdateHACoverState("Open")
         UpdateHADetailedState("Open")
-    elif(bottom == 1):
-        UpdateHACoverState("Closed")
-        UpdateHADetailedState("Closed")
+    
 
 
 InitializePins()
 
-SendInitialStatus()
+PublishInitialStatus()
 
 #threading.Thread(target=automateSunriseSunsetDoor).start()
 
@@ -308,15 +309,18 @@ try:
             if(MovementState == -1 and bottomReedRead == 1
                 or MovementState == 1 and topReedRead == 1):
                     doorState = ""
-                    if(topReedRead == 1):
-                        doorState = "Open"
+                    if(bottomReedRead == 1):
+                        doorState = "CLosed"
+                        time.sleep(7) #let door lock 
                     else:
-                        doorState = "Closed"
-                        time.sleep(7) #let door lock
+                        doorState = "Open"
+                                             
+                    print("Gate reached desired state")
                     UpdateHACoverState(doorState)#update cover status
                     StopGate(doorState)
                     PublishJammedSignal(False)
-                    print("Gate reached desired state")
+                    time.sleep(1)
+                    
 except KeyboardInterrupt:
     print("\n\nExiting\n\n")
 
