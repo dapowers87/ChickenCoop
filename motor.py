@@ -7,7 +7,7 @@ import time
 import threading
 import paho.mqtt.client as mqtt
 
-print "motor.py"c
+print "motor.py"
 
 #time.sleep(10)
 
