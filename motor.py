@@ -7,7 +7,7 @@ import time
 import threading
 import paho.mqtt.client as mqtt
 
-print "motor.py"
+print "motor.py"c
 
 #time.sleep(10)
 
@@ -315,7 +315,7 @@ try:
                 or MovementState == 1 and topReedRead == 1):
                     doorState = ""
                     if(bottomReedRead == 1):
-                        doorState = "CLosed"
+                        doorState = "Closed"
                         time.sleep(7) #let door lock 
                     else:
                         doorState = "Open"
