@@ -253,7 +253,8 @@ PublishInitialStatus()
 #threading.Thread(target=automateSunriseSunsetDoor).start()
 
 def ScanForReedSensorFailure():
-    global failureObserved = False
+    global failureObserved
+    failureObserved = False
     failCount = 0
     while (True):
         topReedRead = GetReed(TopReed)
