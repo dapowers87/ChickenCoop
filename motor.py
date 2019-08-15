@@ -26,6 +26,7 @@ BottomReed = 27
 #0: Stationary
 #1: Opening
 global MovementState
+global failureObserved
 MovementState = 0
 
 def on_connect(client, userdata, flags, rc):
@@ -161,7 +162,10 @@ def OpenGateManually():
     StopGate("Manually Open")
 
 def OpenGate():
-    if(GetReed(TopReed) == 1):
+    if failureObserved:
+        OpenGateManually()
+        return
+    elif(GetReed(TopReed) == 1):
         print("Gate already open")
         PrintReed()
         UpdateHACoverState("Open")
@@ -249,7 +253,7 @@ PublishInitialStatus()
 #threading.Thread(target=automateSunriseSunsetDoor).start()
 
 def ScanForReedSensorFailure():
-    failureObserved = False
+    global failureObserved = False
     failCount = 0
     while (True):
         topReedRead = GetReed(TopReed)
