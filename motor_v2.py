@@ -294,8 +294,8 @@ PublishInitialStatus()
 
 def publishV2Data():
     while(True):
-        topReedRead = GetReed(TopReed)
-        bottomReedRead = GetReed(BottomReed)
+        topReedRead = GetReed(TopReed) == 1
+        bottomReedRead = GetReed(BottomReed) == 1
 
         PublishTopReedState(topReedRead)
         PublishBottomReedState(bottomReedRead)
@@ -364,10 +364,6 @@ try:
 
         topReedRead = GetReed(TopReed)
         bottomReedRead = GetReed(BottomReed)
-
-        PublishTopReedState(topReedRead)
-        PublishBottomReedState(bottomReedRead)
-        PublishMotion()
 
         if MovementState != 0:
             if(MovementState == -1 and bottomReedRead == 1
