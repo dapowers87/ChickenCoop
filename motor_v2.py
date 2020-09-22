@@ -292,6 +292,21 @@ PublishInitialStatus()
 
 #threading.Thread(target=automateSunriseSunsetDoor).start()
 
+def publishV2Data():
+    while(True):
+        topReedRead = GetReed(TopReed) == 1
+        bottomReedRead = GetReed(BottomReed) == 1
+
+        PublishTopReedState(topReedRead)
+        PublishBottomReedState(bottomReedRead)
+        PublishMotion()
+        
+        time.sleep(0.5)
+
+publishV2Thread = threading.Thread(target=publishV2Data)
+publishV2Thread.daemon = True
+publishV2Thread.start()
+
 def ScanForReedSensorFailure():
     global failureObserved
     failureObserved = False
