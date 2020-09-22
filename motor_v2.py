@@ -88,10 +88,10 @@ def UpdateHACoverState(message):
     client.publish("chickenPi/door/State", message, 0, True)
 
 def PublishTopReedState(state):
-    client.publish("v2/reed/top", state, 0, True)
+    client.publish("v2/reed/top", state, 1, True)
 
 def PublishBottomReedState(state):
-    client.publish("v2/reed/bottom", state, 0, True)
+    client.publish("v2/reed/bottom", state, 1, True)
 
 def PublishMotion():
     aWire = gpio.input(HBridgeOutA)
@@ -112,10 +112,10 @@ def PublishMotion():
         stopState = True
         direction = 0
 
-    client.publish("v2/motion/up", upState, 0, True)
-    client.publish("v2/motion/down", downState, 0, True)
-    client.publish("v2/motion/stop", stopState, 0, True)
-    client.publish("v2/motion/direction", direction, 0, True)
+    client.publish("v2/motion/up", upState, 1, True)
+    client.publish("v2/motion/down", downState, 1, True)
+    client.publish("v2/motion/stop", stopState, 1, True)
+    client.publish("v2/motion/direction", direction, 1, True)
 
 def PublishJammedSignal(state):
     message = ""
