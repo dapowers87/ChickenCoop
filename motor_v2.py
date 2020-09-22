@@ -294,13 +294,13 @@ PublishInitialStatus()
 
 def publishV2Data():
     while(True):
-        topReedRead = GetReed(TopReed) == 1
-        bottomReedRead = GetReed(BottomReed) == 1
+        topReedRead = GetReed(TopReed)
+        bottomReedRead = GetReed(BottomReed)
 
         PublishTopReedState(topReedRead)
         PublishBottomReedState(bottomReedRead)
         PublishMotion()
-        
+
         time.sleep(0.5)
 
 publishV2Thread = threading.Thread(target=publishV2Data)
