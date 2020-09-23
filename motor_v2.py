@@ -54,10 +54,15 @@ def on_message(client, userdata, message):
         print("**OPEN_MANUALLY Received")
         OpenGateManually()
     elif (message.payload == "v2/open"):
+        print("v2 open")
         UpMotion()
+        UpdateHACoverState("Opening")
     elif (message.payload == "v2/close"):
+        print("v2 close")
         DownMotion()
+        UpdateHACoverState("Closing")
     elif (message.payload == "v2/stop"):
+        print("v2 stop")
         StopGate("Remotely Stopped")
 
     else:
