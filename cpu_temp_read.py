@@ -39,7 +39,7 @@ client = mqtt.Client()
 client.username_pw_set("chickenPi", "pi")
 client.on_connect = on_connect
 client.on_disconnect = on_disconnect
-client.connect("192.168.1.151", 1883)
+client.connect("192.168.1.157", 1883)
 client.loop_start()
 
 while Connected != True:    #Wait for connection
