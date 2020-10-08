@@ -76,7 +76,7 @@ client.on_message = on_message
 client.on_connect = on_connect
 client.on_disconnect = on_disconnect
 #client.connect("m11.cloudmqtt.com", 11608)
-client.connect("192.168.1.151", 1883)
+client.connect("192.168.1.157", 1883)
 client.loop_start()       #connect to broker
 
 while Connected != True:    #Wait for connection
